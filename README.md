@@ -1,5 +1,7 @@
 # **Preproyecto - Proyecto Integrado**
 
+![Portada](img/portada.png)
+
 **Tabla de contenidos**
 
 - [**Preproyecto - Proyecto Integrado**](#preproyecto---proyecto-integrado)
@@ -57,3 +59,7 @@ La aplicación que finalmente se despliegue puede variar ya que lo presentado en
 ### **Precio**
 
 El proyecto está enfocado en la posibilidad de poner en funcionamiento una aplicación (liviana) con frontend y backend a coste cero, por lo que se usarán los tiers gratuitos de AWS ([lista de servicios gratuitos](https://aws.amazon.com/es/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc&awsf.Free%20Tier%20Types=*all&awsf.Free%20Tier%20Categories=*all)).
+
+---
+
+✒️ **Documentación realizada por Juan Jesús Alejo Sillero.**
