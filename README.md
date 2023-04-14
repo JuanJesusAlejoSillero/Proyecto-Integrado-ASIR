@@ -1,6 +1,8 @@
 # **Preproyecto - Proyecto Integrado**
 
-![Portada](img/portada.png)
+<p align="center">
+  <img src="img/portada.png" alt="Portada" />
+</p>
 
 **Tabla de contenidos**
 
