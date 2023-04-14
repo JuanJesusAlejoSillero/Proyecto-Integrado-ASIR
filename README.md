@@ -1,4 +1,4 @@
-# **Preproyecto - Proyecto Integrado**
+# **Proyecto Integrado**
 
 <p align="center">
   <img src="img/portada.png" alt="Portada" />
@@ -6,7 +6,7 @@
 
 **Tabla de contenidos**
 
-- [**Preproyecto - Proyecto Integrado**](#preproyecto---proyecto-integrado)
+- [**Proyecto Integrado**](#proyecto-integrado)
   - [**Información del proyecto**](#información-del-proyecto)
     - [**Título**](#título)
     - [**Descripción**](#descripción)
