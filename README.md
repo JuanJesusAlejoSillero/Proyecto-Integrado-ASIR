@@ -18,49 +18,33 @@
 
 ### **Título**
 
-CI/CD serverless con GitHub Actions, Terraform y AWS
+Página web serverless con GitHub Actions, Terraform, Hugo y AWS.
 
 ### **Descripción**
 
-El objetivo del proyecto es desplegar una aplicación con frontend y backend utilizando un flujo de CI/CD de GitHub Actions que automáticamente realice pruebas y despliegue la aplicación sobre AWS.
+El objetivo del proyecto es desplegar una web estática utilizando un flujo de CI/CD de GitHub Actions que automáticamente despliegue la web sobre AWS a partir de los ficheros markdown que subiremos al repositorio.
 
-El backend funcionará sobre AWS Lambda y el frontend se ubicará en un bucket S3.
+En concreto, los ficheros estáticos se encontrarán ubicados en un bucket de S3.
 
-Este tipo de configuración se conoce como *serverless* ya que prescindimos completamente de tener una instancia/máquina sirviendo el contenido estático y ejecutando el código del backend de forma dedicada.
+Este tipo de configuración se conoce como *serverless* ya que prescindimos completamente de tener una instancia/máquina sirviendo el contenido 24 horas al día de forma dedicada.
 
 La infraestructura se gestionará utilizando Terraform.
 
-El uso de Lambda + S3 nos permite tener una aplicación que se puede escalar de forma automática y que no tiene coste alguno mientras no se esté utilizando, además de que para aplicaciones pequeñas es mucho más económica esta combinación que utilizar instancias EC2.
-
 ### **Tecnologías que se van a utilizar**
 
-Amazon Web Services (AWS), Terraform, GitHub Actions, lenguajes varios para el frontend y backend de la aplicación.
+Amazon Web Services (AWS), Terraform, GitHub Actions, generador de páginas web estáticas a partir de ficheros markdown (Hugo).
 
 ### **Resultados que se esperan obtener**
 
-Podríamos tener por ejemplo, una aplicación web que redimensione imágenes.
+La finalidad del proyecto sería contar con una página web y su infraestructura generada y desplegada de forma automática a partir de los ficheros que subamos al repositorio de GitHub.
 
-Funcionaría del siguiente modo:
-
-1. Accedemos a la web
-
-2. Subimos nuestra imagen
-
-3. La imagen se envía al bucket de S3
-
-4. Tras subirse, Lambda detecta el nuevo objeto y se ocupa de redimensionar la imagen
-
-5. La imagen editada se sube a S3
-
-6. Finalmente, la web mostraría la imagen redimensionada permitiendo descargarla
-
-Además, gracias al apartado de CI/CD del proyecto, si cambiamos el código de la aplicación, se realizarán las pruebas pertinentes y se desplegará la nueva versión de forma autónoma.
-
-La aplicación que finalmente se despliegue puede variar ya que lo presentado en este documento es preliminar.
+Cualquier cambio que realicemos en el repositorio se verá reflejado en la web automáticamente.
 
 ### **Precio**
 
-El proyecto está enfocado en la posibilidad de poner en funcionamiento una aplicación (liviana) con frontend y backend a coste cero, por lo que se usarán los tiers gratuitos de AWS ([lista de servicios gratuitos](https://aws.amazon.com/es/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc&awsf.Free%20Tier%20Types=*all&awsf.Free%20Tier%20Categories=*all)).
+El proyecto está enfocado en la posibilidad de poner en funcionamiento una web estática (liviana) a coste cero, por lo que se usarán los tiers gratuitos de AWS ([lista de servicios gratuitos](https://aws.amazon.com/es/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc&awsf.Free%20Tier%20Types=*all&awsf.Free%20Tier%20Categories=*all)).
+
+El único coste a tener en cuenta será el de registrar un dominio, que según el proveedor puede costarnos incluso menos de 2€ al año.
 
 ---
 
