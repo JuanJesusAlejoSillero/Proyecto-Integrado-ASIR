@@ -1,0 +1,3 @@
+[submodule "Blog de Juanje/themes/terminal"]
+	path = Blog de Juanje/themes/terminal
+	url = https://github.com/panr/hugo-theme-terminal.git
