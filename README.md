@@ -1,7 +1,7 @@
 # **Proyecto Integrado**
 
 <p align="center">
-  <img src="img/portada.png" alt="Portada" />
+  <img src="img/Portada.png" alt="Portada" />
 </p>
 
 **Tabla de contenidos**
