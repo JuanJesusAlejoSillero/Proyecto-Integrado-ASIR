@@ -1,6 +1,6 @@
 #
 # hugo-deploy.yaml
-# Archivo de configuración de GitHub Actions para verificar con Terraform que la infraestructura existe y luego construir y desplegar el sitio web con Hugo y AWS S3
+# Archivo de configuración de GitHub Actions para construir y desplegar el sitio web con Hugo y AWS S3
 #
 
 name: "Hugo Deploy"
