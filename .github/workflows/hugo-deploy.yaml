@@ -1,0 +1,43 @@
+#
+# hugo-deploy.yaml
+# Archivo de configuración de GitHub Actions para verificar con Terraform que la infraestructura existe y luego construir y desplegar el sitio web con Hugo y AWS S3
+#
+
+name: "Hugo Deploy"
+
+on:
+  push:
+    paths:
+      - "Blog de Juanje/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+      - name: "Setup Hugo"
+        uses: peaceiris/actions-hugo@v2.6.0
+        with:
+          hugo-version: "latest"
+          extended: true
+      - name: "Build"
+        run: |
+          cd "Blog de Juanje"
+          hugo --minify
+      - name: "Deploy to S3"
+        run: |
+          cd public
+          aws s3 sync \
+            --delete \
+            . s3://www.juanje.eu
+      - name: "CloudFront Invalidation"
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/" \
+            "/index.html" \
+            "/posts/" \
+            "/posts/index.html" \
+            "/tags/" \
+            "/tags/index.html"
