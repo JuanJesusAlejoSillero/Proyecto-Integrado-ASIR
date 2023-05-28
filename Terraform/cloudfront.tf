@@ -1,6 +1,6 @@
 /*
-    cloudfront.tf
-    Archivo de configuración de la distribución de CloudFront para el proyecto con Terraform + AWS
+  cloudfront.tf
+  Archivo de configuración de la distribución de CloudFront para el proyecto con Terraform + AWS
 */
 
 // Política de caché para la distribución de CloudFront:

@@ -1,6 +1,6 @@
 /*
-    bucket-s3.tf
-    Archivo de configuración del bucket de S3 que tendrá los ficheros de la web estática para el proyecto con Terraform + AWS
+  bucket-s3.tf
+  Archivo de configuración del bucket de S3 que tendrá los ficheros de la web estática para el proyecto con Terraform + AWS
 */
 
 // Creación del bucket de S3 con el nombre de la variable "domain":

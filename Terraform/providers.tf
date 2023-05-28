@@ -1,6 +1,6 @@
 /*
-    providers.tf
-    Archivo de providers para el proyecto con Terraform + AWS
+  providers.tf
+  Archivo de providers para el proyecto con Terraform + AWS
 */
 
 terraform {
