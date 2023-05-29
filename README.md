@@ -13,7 +13,7 @@
     - [**Tecnologías que se van a utilizar**](#tecnologías-que-se-van-a-utilizar)
     - [**Resultados que se esperan obtener**](#resultados-que-se-esperan-obtener)
     - [**Precio**](#precio)
-  - [**Memoria descriptiva**](#memoria-descriptiva)
+  - [**Memoria del proyecto**](#memoria-del-proyecto)
 
 ## **Información del proyecto**
 
@@ -47,7 +47,7 @@ El proyecto está enfocado en la posibilidad de poner en funcionamiento una web 
 
 El único coste a tener en cuenta será el de registrar un dominio, que según el proveedor puede costarnos incluso menos de 2€ al año.
 
-## **Memoria descriptiva**
+## **Memoria del proyecto**
 
 La memoria puede ser consultada en el siguiente enlace: [www.juanje.eu](https://www.juanje.eu)
 
