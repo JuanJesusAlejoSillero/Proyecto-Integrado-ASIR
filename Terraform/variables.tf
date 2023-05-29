@@ -5,7 +5,7 @@
   Para hacer tests en local:
   $ export TF_VAR_aws_access_key_id="xxxxxxxxxxxxxxx"
   $ export TF_VAR_aws_secret_access_key="xxxxxxxxxxxxxxx"
-  $ export TF_VAR_aws_region="us-east-1"
+  $ export TF_VAR_aws_region="us-east-1" # opcional
   $ export TF_VAR_domain="www.juanje.eu" # opcional
   $ terraform plan
 

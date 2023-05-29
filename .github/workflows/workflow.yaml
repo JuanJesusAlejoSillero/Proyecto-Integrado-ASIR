@@ -14,7 +14,7 @@ env:
   AWS_REGION: "us-east-1"
 
 jobs:
-  build:
+  hugo-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: "Clonar repositorio incluyendo submódulos (para el tema)"
