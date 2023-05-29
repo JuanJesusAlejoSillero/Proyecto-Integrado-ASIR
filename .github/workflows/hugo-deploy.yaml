@@ -27,7 +27,7 @@ jobs:
           hugo --minify
       - name: "Deploy to S3"
         run: |
-          cd public
+          cd "Blog de Juanje/public"
           aws s3 sync \
             --delete \
             . s3://www.juanje.eu
