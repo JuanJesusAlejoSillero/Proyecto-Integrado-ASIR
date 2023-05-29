@@ -2,7 +2,7 @@ languageCode = 'es-es'
 title = 'Blog de Juanje'
 theme = 'terminal'
 
-paginate = 5
+paginate = 4
 
 [params]
   # dir name of your main content (default is `content/posts`).
@@ -64,29 +64,29 @@ paginate = 5
 [languages]
   [languages.en]
     languageName = "English"
-    title = "Terminal"
-    subtitle = "A simple, retro theme for Hugo"
+    title = "Blog de Juanje"
+    subtitle = "Un blog simple y útil"
     owner = ""
     keywords = ""
     copyright = ""
-    menuMore = "Show more"
-    readMore = "Read more"
-    readOtherPosts = "Read other posts"
-    newerPosts = "Newer posts"
-    olderPosts = "Older posts"
-    missingContentMessage = "Page not found..."
-    missingBackButtonLabel = "Back to home page"
+    menuMore = "Más"
+    readMore = "Continuar leyendo"
+    readOtherPosts = "Otros posts"
+    newerPosts = "Posts más recientes"
+    olderPosts = "Posts anteriores"
+    missingContentMessage = "Página no encontrada"
+    missingBackButtonLabel = "Ir a la página principal"
 
     [languages.en.params.logo]
-      logoText = "Terminal"
+      logoText = "Blog de Juanje"
       logoHomeLink = "/"
 
     [languages.en.menu]
       [[languages.en.menu.main]]
-        identifier = "about"
-        name = "About"
+        identifier = "Sobre mí"
+        name = "Sobre mí"
         url = "/about"
-      [[languages.en.menu.main]]
-        identifier = "showcase"
-        name = "Showcase"
-        url = "/showcase"
+#      [[languages.en.menu.main]]
+#        identifier = "showcase"
+#        name = "Showcase"
+#        url = "/showcase"

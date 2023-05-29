@@ -1,46 +1,49 @@
 +++
-title = "Memoria"
-date = "2023-05-22T11:37:33+02:00"
-author = ""
-authorTwitter = "" #do not include @
-cover = ""
-tags = ["", ""]
-keywords = ["", ""]
-description = ""
+title = "Despliegue de una web estática - The GitOps Way"
+date = "2023-05-29T12:37:33+02:00"
+author = "Juanje"
+cover = "/img/Portada.png"
+tags = ["CI/CD", "GitOps", "DevOps", "GitHub Actions", "Terraform", "Hugo", "AWS", "Serverless"]
+description = "Memoria del proyecto integrado de 2º de ASIR de Juan Jesús Alejo Sillero."
 showFullContent = false
-readingTime = false
-hideComments = false
-color = "" #color from the theme settings
+readingTime = true
+hideComments = true
+color = "blue"
 +++
-
-# **Página web serverless con GitHub Actions, Terraform, Hugo y AWS**
-
-![Portada](/img/Portada.png)
 
 **Tabla de contenidos**
 
-- [**Página web serverless con GitHub Actions, Terraform, Hugo y AWS**](#página-web-serverless-con-github-actions-terraform-hugo-y-aws)
-  - [**Descripción**](#descripción)
-  - [**Tecnologías que se van a utilizar**](#tecnologías-que-se-van-a-utilizar)
-  - [**Resultados que se esperan obtener**](#resultados-que-se-esperan-obtener)
-  - [**Precio**](#precio)
-  - [**Por qué automatizar el despliegue de una web estática**](#por-qué-automatizar-el-despliegue-de-una-web-estática)
-  - [**Tecnologías a utilizar**](#tecnologías-a-utilizar)
-    - [**Amazon Web Services (AWS)**](#amazon-web-services-aws)
-    - [**Terraform**](#terraform)
-    - [**Hugo**](#hugo)
-    - [**GitHub Actions**](#github-actions)
-  - [**Preparación del entorno**](#preparación-del-entorno)
-    - [**Configuración de la MFA**](#configuración-de-la-mfa)
-    - [**Creación del usuario de IAM**](#creación-del-usuario-de-iam)
-    - [**Creación del certificado SSL**](#creación-del-certificado-ssl)
-    - [**Creación del repositorio de GitHub**](#creación-del-repositorio-de-github)
-  - [**Terraform**](#terraform-1)
-    - [**Creación del bucket de S3 para el estado remoto**](#creación-del-bucket-de-s3-para-el-estado-remoto)
-    - [**Configuración de Terraform**](#configuración-de-terraform)
-  - [**Hugo**](#hugo-1)
-  - [**GitHub**](#github)
-    - [**GitHub Actions**](#github-actions-1)
+- [**Descripción**](#descripción)
+- [**Tecnologías que se van a utilizar**](#tecnologías-que-se-van-a-utilizar)
+- [**Resultados que se esperan obtener**](#resultados-que-se-esperan-obtener)
+- [**Precio**](#precio)
+- [**Por qué automatizar el despliegue de una web estática**](#por-qué-automatizar-el-despliegue-de-una-web-estática)
+- [**Tecnologías a utilizar**](#tecnologías-a-utilizar)
+  - [**Amazon Web Services (AWS)**](#amazon-web-services-aws)
+  - [**Terraform**](#terraform)
+  - [**Hugo**](#hugo)
+  - [**GitHub Actions**](#github-actions)
+- [**Preparación del entorno**](#preparación-del-entorno)
+  - [**Configuración de la MFA**](#configuración-de-la-mfa)
+  - [**Creación del usuario de IAM**](#creación-del-usuario-de-iam)
+  - [**Creación del certificado SSL**](#creación-del-certificado-ssl)
+  - [**Creación del repositorio de GitHub**](#creación-del-repositorio-de-github)
+- [**Terraform**](#terraform-1)
+  - [**Creación del bucket de S3 para el estado remoto**](#creación-del-bucket-de-s3-para-el-estado-remoto)
+  - [**Configuración de Terraform**](#configuración-de-terraform)
+- [**Hugo**](#hugo-1)
+- [**GitHub**](#github)
+  - [**GitHub Actions**](#github-actions-1)
+  - [**Secrets**](#secrets)
+- [**Comprobación**](#comprobación)
+- [**Bibliografía**](#bibliografía)
+  - [**Documentaciones oficiales**](#documentaciones-oficiales)
+    - [**Amazon Web Services**](#amazon-web-services)
+    - [**Terraform**](#terraform-2)
+    - [**Hugo**](#hugo-2)
+    - [**Git, GitHub y GitHub Actions**](#git-github-y-github-actions)
+  - [**Blogs, foros, discusiones y webs de texto**](#blogs-foros-discusiones-y-webs-de-texto)
+  - [**Tutoriales en vídeo**](#tutoriales-en-vídeo)
 
 ## **Descripción**
 
@@ -77,6 +80,8 @@ La automatización de tareas es una práctica muy extendida en el mundo de la in
 Por esto, es interesante comenzar a aprender con un proyecto a menor escala como este, que nos permitirá familiarizarnos con las tecnologías que se van a utilizar y servirá de base para proyectos más complejos.
 
 ## **Tecnologías a utilizar**
+
+![Diagrama](/img/Diagrama.png)
 
 ### **Amazon Web Services (AWS)**
 
@@ -694,6 +699,256 @@ Es un archivo bastante sencillo de comprender, pero voy a detallar algunas parte
    - `terraform`: Se ejecutará en una máquina virtual de Ubuntu y se encargará de verificar y desplegar la infraestructura con Terraform si hiciera falta. Para ello, primero se clonará el repositorio, se instalará Terraform, se inicializará y se aplicará el plan.
 
    - `hugo-deploy`: Se ejecutará en una máquina virtual de Ubuntu y se encargará de construir el sitio web con Hugo y desplegarlo en S3, pero solo se ejecutará si el *job* de *terraform* termina satisfactoriamente, evitando así intentar subir los ficheros de la web si la infraestructura no está lista. Para ello, primero se clonará el repositorio incluyendo el submódulo del tema, se configurarán las credenciales de AWS CLI, se instalará Hugo, se crearán los archivos de la web y se sincronizarán con nuestro bucket de S3, además, se invalidará la caché de CloudFront (en aquellos archivos que es necesario) para tener los cambios disponibles de forma inmediata.
+
+### **Secrets**
+
+Para que el *workflow* funcione, necesitamos crear algunos *secrets* en nuestro repositorio, para ello en la web de GitHub vamos a `Settings > Secrets and variables > Actions > New repository secret` y creamos los siguientes, con sus respectivos valores:
+
+![GitHub-Secrets](/img/GitHub-Secrets.png)
+
+## **Comprobación**
+
+Llegados a este punto, ya podemos hacer un *push* a alguno de los directorios que hemos indicado en el *workflow* (`Terraform` o `Blog de Juanje`) y comprobar que todo se ejecuta correctamente:
+
+{{< youtube BBd9G7Jg9MI >}}
+
+Como podemos ver, todo el flujo de CI/CD se ha ejecutado correctamente y ya tenemos nuestra web estática desplegada, sin servidor y sin preocuparnos por gestionar la infraestructura o el código html/css/js.
+
+## **Bibliografía**
+
+Para la realización de este proyecto he ido recopilando y utilizando partes de muchas, muchísimas fuentes, ya que no he conseguido hallar una que pudiera seguir de principio a fin sin encontrar obstáculos en el proceso (configuraciones desfasadas, errores en la documentación, falta de claridad en las explicaciones, infraestructuras demasiado complejas o incompatibles con mi proyecto, etc.). Las clasifico a continuación para intentar facilitar la búsqueda de información.
+
+### **Documentaciones oficiales**
+
+#### **Amazon Web Services**
+
+- [Interfaz de la línea de comandos - AWS CLI - AWS](https://aws.amazon.com/es/cli/)
+
+- [Choosing the price class for a CloudFront distribution - Amazon CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/PriceClass.html?icmpid=docs_cf_help_panel)
+
+- [Setting permissions for website access - Amazon Simple Storage Service](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteAccessPermissionsReqd.html)
+
+- [Hosting a static website using Amazon S3 - Amazon Simple Storage Service](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html)
+
+- [Regiones y zonas de disponibilidad de la infraestructura global](https://aws.amazon.com/es/about-aws/global-infrastructure/regions_az/)
+
+- [Regions, Availability Zones, and Local Zones - Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html)
+
+- [Regions and Zones - Amazon Elastic Compute Cloud](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html)
+
+- [Installing or updating the latest version of the AWS CLI - AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html#cliv2-linux-install)
+
+- [Uso de la capa gratuita de AWS - Facturación de AWS](https://docs.aws.amazon.com/es_es/awsaccountbilling/latest/aboutv2/billing-free-tier.html#avoid-charges-after-free-tier)
+
+- [Automate static website deployment to Amazon S3 - AWS Prescriptive Guidance](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/automate-static-website-deployment-to-amazon-s3.html)
+
+#### **Terraform**
+
+- [Terraform CLI: Commands - Terraform by HashiCorp](https://developer.hashicorp.com/terraform/cli/commands/init)
+
+- [Terraform CLI: Meta-arguments - Terraform by HashiCorp](https://developer.hashicorp.com/terraform/language/meta-arguments/depends_on)
+
+- [Provider Configuration - Configuration Language | Terraform | HashiCorp Developer](https://developer.hashicorp.com/terraform/language/providers/configuration)
+
+- [Syntax - Configuration Language | Terraform | HashiCorp Developer](https://developer.hashicorp.com/terraform/language/syntax/configuration)
+
+- [Variables - Configuration Language | Terraform | HashiCorp Developer](https://developer.hashicorp.com/terraform/language/values/variables)
+
+- [Command: init | Terraform | HashiCorp Developer](https://developer.hashicorp.com/terraform/cli/commands/init)
+
+- [The depends_on Meta-Argument - Configuration Language | Terraform | HashiCorp Developer](https://developer.hashicorp.com/terraform/language/meta-arguments/depends_on)
+
+- [Backend Type: s3 | Terraform | HashiCorp Developer](https://developer.hashicorp.com/terraform/language/settings/backends/s3)
+
+- [Input Variables - Configuration Language | Terraform | HashiCorp Developer](https://developer.hashicorp.com/terraform/language/values/variables)
+
+- [Host a Static Website with S3 and Cloudflare | Terraform | HashiCorp Developer](https://developer.hashicorp.com/terraform/tutorials/applications/cloudflare-static-website)
+
+- [Automate Terraform with GitHub Actions | Terraform | HashiCorp Developer](https://developer.hashicorp.com/terraform/tutorials/automation/github-actions)
+
+- [Build Infrastructure | Terraform | HashiCorp Developer](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/aws-build)
+
+- [Docs overview | hashicorp/aws | Terraform Registry](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+
+- [aws_cloudfront_cache_policy | Data Sources | hashicorp/aws | Terraform Registry](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_cache_policy)
+
+- [aws_iam_policy_document | Data Sources | hashicorp/aws | Terraform Registry](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document)
+
+- [aws_cloudfront_distribution | Resources | hashicorp/aws | Terraform Registry](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution)
+
+- [aws_cloudfront_origin_access_identity | Resources | hashicorp/aws | Terraform Registry](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_access_identity)
+
+- [aws_s3_bucket | Resources | hashicorp/aws | Terraform Registry](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket)
+
+- [aws_s3_bucket_policy | Resources | hashicorp/aws | Terraform Registry](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy)
+
+- [aws_s3_bucket_public_access_block | Resources | hashicorp/aws | Terraform Registry](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block.html)
+
+- [aws_cloudfront_distribution | Resources | hashicorp/aws | Terraform Registry](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution#price_class)
+
+- [aws_s3_bucket_website_configuration | Resources | hashicorp/aws | Terraform Registry](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_website_configuration)
+
+- [Automate Terraform with GitHub Actions | Terraform - HashiCorp Developer](https://developer.hashicorp.com/terraform/tutorials/automation/github-actions)
+
+#### **Hugo**
+
+- [Shortcodes | Hugo](https://gohugo.io/content-management/shortcodes/)
+
+- [Quick Start | Hugo](https://gohugo.io/getting-started/quick-start/)
+
+- [Basic usage | Hugo](https://gohugo.io/getting-started/usage/)
+
+- [gohugoio/hugoBasicExample: Example site to use with Hugo & Hugo Themes](https://github.com/gohugoio/hugoBasicExample)
+
+- [terminal | Hugo Themes](https://themes.gohugo.io/themes/hugo-theme-terminal/)
+
+#### **Git, GitHub y GitHub Actions**
+
+- [Contexts - GitHub Docs](https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability)
+
+- [Workflow syntax for GitHub Actions - GitHub Docs](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_iddefaultsrun)
+
+- [Workflow syntax for GitHub Actions - GitHub Docs](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idneeds)
+
+- [Ignoring files - GitHub Docs](https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files)
+
+- [Set up Git - GitHub Docs](https://docs.github.com/en/get-started/quickstart/set-up-git)
+
+- [Conectar a GitHub con SSH - Documentación de GitHub](https://docs.github.com/es/authentication/connecting-to-github-with-ssh)
+
+- [Hugo setup · Actions · GitHub Marketplace](https://github.com/marketplace/actions/hugo-setup)
+
+- [HashiCorp - Setup Terraform · Actions · GitHub Marketplace](https://github.com/marketplace/actions/hashicorp-setup-terraform)
+
+### **Blogs, foros, discusiones y webs de texto**
+
+- [AWS Breaking (Change) News: New S3 Buckets Blocked For Public Access | by Adam Fisher / fisher king (@therightstuff) | Apr, 2023 | AWS Tip](https://awstip.com/aws-breaking-change-news-new-s3-buckets-blocked-for-public-access-ad83d626afb4)
+
+- [How was this "Hello there!" section done on the official website? · Issue #187 · panr/hugo-theme-terminal](https://github.com/panr/hugo-theme-terminal/issues/187)
+
+- [Blogging With Hugo | Justin James](https://digitaldrummerj.me/series/blogging-with-hugo/)
+
+- [foo-dogsquared/hugo-theme-arch-terminal-demo: Demo of the Hugo Terminal Plus-Minus theme](https://github.com/foo-dogsquared/hugo-theme-arch-terminal-demo)
+
+- [Multi Host support - Allow BaseURL to generate dynamically at runtime - window.location.hostname · Issue #8587 · gohugoio/hugo](https://github.com/gohugoio/hugo/issues/8587#issuecomment-851018525)
+
+- [How to Set Up a Remote Backend for Terraform State File with Amazon S3](https://sumanprasad.hashnode.dev/how-to-set-up-a-remote-backend-for-terraform-state-file-with-amazon-s3#heading-step-1-create-an-s3-bucket)
+
+- [How To Upload File to S3 with the AWS CLI](https://adamtheautomator.com/upload-file-to-s3/)
+
+- [What happened to github.event.head_commit.modified? · community · Discussion #25597](https://github.com/orgs/community/discussions/25597)
+
+- [How to Host a Website on S3 Without Getting Lost in the Sea | by Kyle Galbraith | Medium](https://medium.com/@kyle.galbraith/how-to-host-a-website-on-s3-without-getting-lost-in-the-sea-e2b82aa6cd38)
+
+- [amazon web services - Missing Authentication Token while accessing API Gateway? - Stack Overflow](https://stackoverflow.com/questions/39655048/missing-authentication-token-while-accessing-api-gateway)
+
+- [github - Running actions in another directory - Stack Overflow](https://stackoverflow.com/questions/58139175/running-actions-in-another-directory/63122434#63122434)
+
+- [continuous integration - Dependencies Between Workflows on Github Actions - Stack Overflow](https://stackoverflow.com/questions/58457140/dependencies-between-workflows-on-github-actions)
+
+- [How Caching and Invalidations in AWS CloudFront works - Knoldus Blogs](https://blog.knoldus.com/how-caching-and-invalidations-in-aws-cloudfront-works/)
+
+- [How to manually invalidate AWS CloudFront | by Christina Hastenrath | Medium](https://christinavhastenrath.medium.com/how-to-manually-invalidate-aws-cloudfront-b36a2ab4e1be)
+
+- [How to use Cloudfront for Secure Delivery of Static Websites Around the World | by Kyle Galbraith | Medium](https://medium.com/@kyle.galbraith/how-to-make-use-of-cloudfront-for-secure-delivery-of-static-websites-to-the-world-d2f54e8b096)
+
+- [docker - How can I make a GitHub Workflow depend on the success of another workflow? - Stack Overflow](https://stackoverflow.com/questions/62367778/how-can-i-make-a-github-workflow-depend-on-the-success-of-another-workflow)
+
+- [Running GitHub Actions Sequentially | Steven M. Mortimer](https://stevenmortimer.com/running-github-actions-sequentially/)
+
+- [Amazon S3 to apply security best practices for all new buckets - Help Net Security](https://www.helpnetsecurity.com/2023/02/07/amazon-s3-bucket-security/)
+
+- [AWS S3 Sync Examples - Sync S3 buckets AWS CLI | Devops Junction](https://www.middlewareinventory.com/blog/aws-s3-sync-example/)
+
+- [How to create programmatic access user in AWS](https://www.simplified.guide/aws/iam/create-programmatic-access-user)
+
+- [permissions - Amazon Cloudfront with S3. Access Denied - Server Fault](https://serverfault.com/questions/581268/amazon-cloudfront-with-s3-access-denied)
+
+- [amazon web services - How to delete an aws cloudfront Origin Access Identity - Stack Overflow](https://stackoverflow.com/questions/34546835/how-to-delete-an-aws-cloudfront-origin-access-identity)
+
+- [amazon web services - AWS CLI CloudFront Invalidate All Files - Stack Overflow](https://stackoverflow.com/questions/37759949/aws-cli-cloudfront-invalidate-all-files)
+
+- [amazon web services - AWS CloudFront access denied to S3 bucket - Stack Overflow](https://stackoverflow.com/questions/42251745/aws-cloudfront-access-denied-to-s3-bucket)
+
+- [amazon web services - Cloudfront with S3 static site hosting responds with 504 error - Stack Overflow](https://stackoverflow.com/questions/68506497/cloudfront-with-s3-static-site-hosting-responds-with-504-error)
+
+- [Need help with Cloudfront, S3 https redirection error 504 : r/aws](https://www.reddit.com/r/aws/comments/es7bw6/need_help_with_cloudfront_s3_https_redirection/)
+
+- [Building a site with Hugo, using GitHub, Amazon S3 and CloudFront with HTTPS and extensionless URLs · The Angry Dev](https://bizzeh.com/hugo-github-aws-s3-cloudfront-ssl-extensionless/)
+
+- [Create your own blog with hugo and S3 - Cibermanchego](http://cibermanchego.com/en/post/2022-01-12-create-your-own-blog-with-hugo-and-s3/)
+
+- [How to deploy an S3 Bucket in AWS- using Terraform - Knoldus Blogs](https://blog.knoldus.com/how-to-deploy-an-s3-bucket-in-aws-using-terraform/)
+
+- [How to Create an S3 Bucket with Terraform | Pure Storage Blog](https://blog.purestorage.com/purely-informational/how-to-create-an-s3-bucket-with-terraform/)
+
+- [How to Create S3 Bucket Policy using Terraform - CloudKatha](https://cloudkatha.com/how-to-create-s3-bucket-policy-using-terraform/)
+
+- [Terraform Remote State with AWS S3 and DynamoDB](https://dangibbs.uk/blog/terraform-remote-state-aws-s3-dynamodb/)
+
+- [Host a static website locally using Simple Storage Service (S3) and Terraform with LocalStack | Docs](https://docs.localstack.cloud/tutorials/s3-static-website-terraform/)
+
+- [Terraform doesn't understand that website_endpoint will change value · Issue #13393 · hashicorp/terraform-provider-aws](https://github.com/hashicorp/terraform-provider-aws/issues/13393)
+
+- [CloudFront Terraform Examples - Easy AWS Automation 2023](https://hands-on.cloud/cloudfront-terraform-examples/)
+
+- [Terraforming a S3 Website with ACM Certificates, Cloudfront, & Route53 | by Garrett Sweeney | Cloud Tidbits | Medium](https://medium.com/cloud-tidbits/terraforming-an-s3-react-website-with-acm-certificates-cloudfront-route53-150936350074)
+
+- [Terraform Remote States in S3. A simple way to use S3 backend to store… | by Allan Denot | DNX Labs | Medium](https://medium.com/dnx-labs/terraform-remote-states-in-s3-d74edd24a2c4)
+
+- [Create An AWS S3 Website Using Terraform And Github Actions](https://openupthecloud.com/terraform-github-actions/)
+
+- [Hosting a Static Website on AWS S3 using Terraform | by Shashwot Risal | Medium](https://shashwotrisal.medium.com/hostin-a-static-website-on-aws-s3-using-terraform-d27f81246e82)
+
+- [amazon web services - Terraform - AWS IAM user with Programmatic access - Stack Overflow](https://stackoverflow.com/questions/58853125/terraform-aws-iam-user-with-programmatic-access)
+
+- [amazon web services - How to use the the newly introduced aws_cloudfront_cache_policy resource in terraform - Stack Overflow](https://stackoverflow.com/questions/66570259/how-to-use-the-the-newly-introduced-aws-cloudfront-cache-policy-resource-in-terr)
+
+- [Terraform Remote State Storage with AWS S3 & DynamoDB - STACKSIMPLIFY](https://terraformguru.com/terraform-real-world-on-aws-ec2/20-Remote-State-Storage-with-AWS-S3-and-DynamoDB/)
+
+- [Hosting a Secure Static Website on AWS S3 using Terraform (Step By Step Guide) | Alex Hyett](https://www.alexhyett.com/terraform-s3-static-website-hosting/)
+
+- [Deploy Hugo Sites With Terraform and Github Actions (Part 1) | Dennis Martinez](https://dennmart.com/articles/deploy-hugo-sites-with-terraform-and-github-actions-part-1/)
+
+- [Deploy Hugo Sites With Terraform and Github Actions (Part 2) | Dennis Martinez](https://dennmart.com/articles/deploy-hugo-sites-with-terraform-and-github-actions-part-2/)
+
+- [Build a static website using S3 & Route 53 with Terraform - DEV Community](https://dev.to/aws-builders/build-a-static-website-using-s3-route-53-with-terraform-1ele)
+
+- [Guide to Create Github Actions Workflow for Terraform and AWS - DEV Community](https://dev.to/aws-builders/guide-to-create-github-actions-workflow-for-terraform-and-aws-5de2)
+
+- [Github Actions + Hugo + Terraform + S3 | Jérôme Decoster](https://jeromedecoster.github.io/aws/github-actions-hugo-terraform-s3/)
+
+- [Deploy static website to S3 using Github actions - DEV Community](https://dev.to/johnkevinlosito/deploy-static-website-to-s3-using-github-actions-4a0e)
+
+- [github - pull using git including submodule - Stack Overflow](https://stackoverflow.com/questions/8090761/pull-using-git-including-submodule)
+
+- [How to Perform Git Submodule Checkout | phoenixNAP KB](https://phoenixnap.com/kb/git-checkout-submodule)
+
+- [git - How do I remove a submodule? - Stack Overflow](https://stackoverflow.com/questions/1260748/how-do-i-remove-a-submodule)
+
+- [Limpiar caché  |  Public DNS  |  Google for Developers](https://developers.google.com/speed/public-dns/cache?hl=es-419)
+
+### **Tutoriales en vídeo**
+
+- [AWS Hands-On: Automate AWS Infra Deployment using Terraform and GitHub Actions - YouTube](https://www.youtube.com/watch?t=598&v=scecLqTeP3k&feature=youtu.be)
+
+- [Getting Started With Terraform | Terraform Tutorial | #3 - YouTube](https://www.youtube.com/watch?v=t7XUh0xyhTI&list=PL8HowI-L-3_9bkocmR3JahQ4Y-Pbqs2Nt&t=608s)
+
+- [Data Sources | Terraform Tutorial | #10 - YouTube](https://www.youtube.com/watch?v=9cDDZzl7zow&list=PL8HowI-L-3_9bkocmR3JahQ4Y-Pbqs2Nt&index=10)
+
+- [AWS Tutorial - Website hosting with S3, Route 53 & Cloudfront using Namecheap domain - YouTube](https://www.youtube.com/watch?v=Bmuoqo_JY4g)
+
+- [Creating an IAM User and Generating Access Key on Amazon Web Services AWS - YouTube](https://www.youtube.com/watch?v=HuE-QhrmE1c)
+
+- [Deploy Static Website to AWS S3 with HTTPS using CloudFront - YouTube](https://www.youtube.com/watch?v=o2HTkVxzivA)
+
+- [Static website hosting on Amazon S3 (with CloudFront) without enabling public access. - YouTube](https://www.youtube.com/watch?v=qsJSv7J4s7k)
+
+- [Backends and Remote State | Terraform Tutorial | #17 - YouTube](https://www.youtube.com/watch?v=RBW253A4SvY)
+
+- [AWS Hands-On: Automate AWS Infra Deployment using Terraform and GitHub Actions - YouTube](https://www.youtube.com/watch?v=scecLqTeP3k&t=598s)
+
+- [Terraform Tutorial for Beginners + Labs: Complete Step by Step Guide! - YouTube](https://www.youtube.com/watch?v=YcJ9IeukJL8)
 
 ---
 

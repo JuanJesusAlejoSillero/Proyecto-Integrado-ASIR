@@ -1,16 +1,14 @@
 +++
-title = "Post 111 - Taller 2"
+title = "Ejemplos sintaxis de Markdown"
 date = "2023-05-18T11:26:04+02:00"
 author = "Juanje"
-authorTwitter = "" #do not include @
 cover = ""
-tags = ["", ""]
-keywords = ["", ""]
-description = ""
+tags = ["Markdown", "IAW"]
+description = "Ejemplos de sintaxis de Markdown."
 showFullContent = false
-readingTime = false
-hideComments = false
-color = "" #color from the theme settings
+readingTime = true
+hideComments = true
+color = "blue"
 +++
 
 # **Taller 2**
