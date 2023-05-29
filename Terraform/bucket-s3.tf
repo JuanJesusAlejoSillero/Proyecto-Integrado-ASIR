@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "bucket-s3" {
   force_destroy = true
 }
 
-// Configuración para habilitar el almacenaiento de sitios web estáticos en el bucket de S3:
+// Configuración para habilitar el almacenamiento de sitios web estáticos en el bucket de S3:
 resource "aws_s3_bucket_website_configuration" "bucket-s3-static" {
   bucket = aws_s3_bucket.bucket-s3.id
   index_document {
