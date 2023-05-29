@@ -41,7 +41,7 @@ jobs:
         run: terraform apply -auto-approve terraform.tfplan
   hugo-deploy:
     needs: terraform
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main') && contains(github.event.head_commit.modified, 'Blog de Juanje')
+    if: github.event_name == 'push' && github.event.head_commit.message =~ '^Web estática$'
     name: "Hugo + Deploy"
     runs-on: ubuntu-latest
     steps:
