@@ -29,11 +29,6 @@ resource "aws_s3_bucket_public_access_block" "bucket-s3-public" {
   restrict_public_buckets = false
 }
 
-resource "aws_s3_bucket_policy" "bucket-s3-policy" {
-  bucket = aws_s3_bucket.bucket-s3.id
-  policy = data.aws_iam_policy_document.bucket-s3-policy.json
-}
-
 data "aws_iam_policy_document" "bucket-s3-policy" {
   statement {
     principals {
@@ -47,4 +42,9 @@ data "aws_iam_policy_document" "bucket-s3-policy" {
     sid = "PublicReadGetObject"
     effect = "Allow"
   }
+}
+
+resource "aws_s3_bucket_policy" "bucket-s3-policy" {
+  bucket = aws_s3_bucket.bucket-s3.id
+  policy = data.aws_iam_policy_document.bucket-s3-policy.json
 }
