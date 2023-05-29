@@ -34,14 +34,5 @@ jobs:
         run: |
           cd "Blog de Juanje"
           hugo --minify
-      - name: "Deploy to S3"
-        run: |
-          cd "Blog de Juanje/public"
-          aws s3 sync \
-            --delete \
-            . s3://www.juanje.eu
-      - name: "CloudFront Invalidation"
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
-            --paths "/*"
+          pwd
+          ls -la
