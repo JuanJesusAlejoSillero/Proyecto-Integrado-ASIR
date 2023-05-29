@@ -1,0 +1,35 @@
+#
+# terraform.yaml
+# Archivo de configuración de GitHub Actions para verificar y desplegar la infraestructura con Terraform
+#
+
+name: "Terraform"
+
+on:
+  push:
+    paths:
+      - "Terraform/**"
+      - "Blog de Juanje/**"
+
+env:
+  TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "Terraform"
+    steps:
+      - name: "Clonar repositorio"
+        uses: actions/checkout@v3
+      - name: "Setup Terraform"
+        uses: hashicorp/setup-terraform@v2.0.3
+      - name: "Terraform Init"
+        timeout-minutes: 2
+        run: terraform init -input=false
+      - name: "Terraform Plan"
+        run: terraform plan -out=terraform.tfplan
+      - name: "Terraform Apply"
+        run: terraform apply -auto-approve terraform.tfplan
