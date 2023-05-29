@@ -35,10 +35,8 @@ jobs:
       - name: "Terraform Init"
         timeout-minutes: 2
         run: terraform init -input=false
-      - name: "Terraform Plan"
-        run: terraform plan -out=terraform.tfplan
       - name: "Terraform Apply"
-        run: terraform apply -auto-approve terraform.tfplan
+        run: terraform apply -auto-approve
   hugo-deploy:
     needs: terraform
     name: "Hugo + Deploy"
