@@ -17,8 +17,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: "Clonar repositorio"
+      - name: "Clonar repositorio incluyendo submódulos (para el tema)"
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
       - name: "Configurar credenciales AWS CLI"
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -34,9 +36,14 @@ jobs:
         run: |
           cd "Blog de Juanje"
           hugo --minify
-          pwd
-          ls -la
       - name: "Deploy to S3"
         run: |
-          pwd
-          ls -la
+          cd "Blog de Juanje/public"
+          aws s3 sync \
+            --delete \
+            . s3://www.juanje.eu
+      - name: "CloudFront Invalidation"
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
