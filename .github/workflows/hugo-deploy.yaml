@@ -36,3 +36,7 @@ jobs:
           hugo --minify
           pwd
           ls -la
+      - name: "Deploy to S3"
+        run: |
+          pwd
+          ls -la
