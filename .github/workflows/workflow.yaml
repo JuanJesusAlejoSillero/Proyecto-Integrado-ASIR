@@ -1,20 +1,48 @@
 #
 # hugo-deploy.yaml
-# Archivo de configuración de GitHub Actions para construir y desplegar el sitio web con Hugo y AWS S3
+# Archivo de configuración de GitHub Actions para:
+# 1. Verificar y desplegar la infraestructura con Terraform cuando se haga push a alguno de los directorios "Terraform" o "Blog de Juanje"
+# 2. Construir el sitio web con Hugo y desplegarlo en S3 cuando se haga push al directorio "Blog de Juanje"
 #
 
-name: "Hugo Deploy"
+name: "Workflow"
 
 on:
   push:
+    branches:
+      - main
     paths:
+      - "Terraform/**"
       - "Blog de Juanje/**"
 
 env:
   AWS_REGION: "us-east-1"
+  TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
+  terraform:
+    name: "Terraform"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "Terraform"
+    steps:
+      - name: "Clonar repositorio"
+        uses: actions/checkout@v3
+      - name: "Setup Terraform"
+        uses: hashicorp/setup-terraform@v2.0.3
+      - name: "Terraform Init"
+        timeout-minutes: 2
+        run: terraform init -input=false
+      - name: "Terraform Plan"
+        run: terraform plan -out=terraform.tfplan
+      - name: "Terraform Apply"
+        run: terraform apply -auto-approve terraform.tfplan
   hugo-deploy:
+    needs: terraform
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main') && contains(github.event.head_commit.modified, 'Blog de Juanje')
+    name: "Hugo Deploy"
     runs-on: ubuntu-latest
     steps:
       - name: "Clonar repositorio incluyendo submódulos (para el tema)"
