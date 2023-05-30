@@ -13,79 +13,53 @@ color = "blue"
 
 **Tabla de contenidos**
 
-- [**Descripción**](#descripción)
-- [**Tecnologías que se van a utilizar**](#tecnologías-que-se-van-a-utilizar)
-- [**Resultados que se esperan obtener**](#resultados-que-se-esperan-obtener)
-- [**Precio**](#precio)
-- [**Por qué automatizar el despliegue de una web estática**](#por-qué-automatizar-el-despliegue-de-una-web-estática)
-- [**Tecnologías a utilizar**](#tecnologías-a-utilizar)
-  - [**Amazon Web Services (AWS)**](#amazon-web-services-aws)
-  - [**Terraform**](#terraform)
-  - [**Hugo**](#hugo)
-  - [**GitHub Actions**](#github-actions)
-- [**Preparación del entorno**](#preparación-del-entorno)
-  - [**Configuración de la MFA**](#configuración-de-la-mfa)
-  - [**Creación del usuario de IAM**](#creación-del-usuario-de-iam)
-  - [**Creación del certificado SSL**](#creación-del-certificado-ssl)
-  - [**Creación del repositorio de GitHub**](#creación-del-repositorio-de-github)
-- [**Terraform**](#terraform-1)
-  - [**Creación del bucket de S3 para el estado remoto**](#creación-del-bucket-de-s3-para-el-estado-remoto)
-  - [**Configuración de Terraform**](#configuración-de-terraform)
-- [**Hugo**](#hugo-1)
-- [**GitHub**](#github)
-  - [**GitHub Actions**](#github-actions-1)
-  - [**Secrets**](#secrets)
-- [**Comprobación**](#comprobación)
-- [**Bibliografía**](#bibliografía)
-  - [**Documentaciones oficiales**](#documentaciones-oficiales)
-    - [**Amazon Web Services**](#amazon-web-services)
-    - [**Terraform**](#terraform-2)
-    - [**Hugo**](#hugo-2)
-    - [**Git, GitHub y GitHub Actions**](#git-github-y-github-actions)
-  - [**Blogs, foros, discusiones y webs de texto**](#blogs-foros-discusiones-y-webs-de-texto)
-  - [**Tutoriales en vídeo**](#tutoriales-en-vídeo)
+- [**0. Descripción**](#0-descripción)
+- [**1. Tecnologías a utilizar**](#1-tecnologías-a-utilizar)
+  - [**1.1. Amazon Web Services (AWS)**](#11-amazon-web-services-aws)
+  - [**1.2. Terraform**](#12-terraform)
+  - [**1.3. Hugo**](#13-hugo)
+  - [**1.4. GitHub Actions**](#14-github-actions)
+- [**2. Resultados que se esperan obtener**](#2-resultados-que-se-esperan-obtener)
+- [**3. Precio**](#3-precio)
+- [**4. ¿Por qué automatizar el despliegue de una web estática?**](#4-por-qué-automatizar-el-despliegue-de-una-web-estática)
+- [**5. Preparación del entorno**](#5-preparación-del-entorno)
+  - [**5.1. Configuración de la MFA**](#51-configuración-de-la-mfa)
+  - [**5.2. Creación del usuario de IAM**](#52-creación-del-usuario-de-iam)
+  - [**5.3. Creación del certificado SSL**](#53-creación-del-certificado-ssl)
+  - [**5.4. Creación del repositorio de GitHub**](#54-creación-del-repositorio-de-github)
+- [**6. Terraform**](#6-terraform)
+  - [**6.1. Creación del bucket de S3 para el estado remoto**](#61-creación-del-bucket-de-s3-para-el-estado-remoto)
+  - [**6.2. Configuración de Terraform**](#62-configuración-de-terraform)
+- [**7. Hugo**](#7-hugo)
+- [**8. GitHub**](#8-github)
+  - [**8.1. GitHub Actions**](#81-github-actions)
+  - [**8.2. Secrets**](#82-secrets)
+- [**9. Comprobación**](#9-comprobación)
+- [**10. Enlaces de interés**](#10-enlaces-de-interés)
+- [**11. Bibliografía**](#11-bibliografía)
+  - [**11.1. Documentaciones oficiales**](#111-documentaciones-oficiales)
+    - [**11.1.1. Amazon Web Services**](#1111-amazon-web-services)
+    - [**11.1.2. Terraform**](#1112-terraform)
+    - [**11.1.3. Hugo**](#1113-hugo)
+    - [**11.1.4. Git, GitHub y GitHub Actions**](#1114-git-github-y-github-actions)
+  - [**11.2 Blogs, foros, discusiones y webs de texto**](#112-blogs-foros-discusiones-y-webs-de-texto)
+  - [**11.3. Tutoriales en vídeo**](#113-tutoriales-en-vídeo)
 
-## **Descripción**
+## **0. Descripción**
 
-El objetivo del proyecto es desplegar una web estática utilizando un flujo de CI/CD de GitHub Actions que automáticamente despliegue la web sobre AWS a partir de los ficheros markdown que subiremos al repositorio.
+El objetivo del proyecto es desplegar una web estática utilizando un flujo de CI/CD de GitHub Actions que automáticamente despliegue la web sobre AWS a partir de los ficheros markdown que subiremos al repositorio. En concreto, los ficheros estáticos se encontrarán ubicados en un bucket de S3.
 
-En concreto, los ficheros estáticos se encontrarán ubicados en un bucket de S3.
-
-Este tipo de configuración se conoce como *serverless* ya que prescindimos completamente de tener una instancia (servidor) ofreciendo el contenido 24 horas al día de forma dedicada.
+Este tipo de configuración se conoce como *serverless* ya que prescindimos completamente de tener una instancia/máquina sirviendo el contenido 24 horas al día de forma dedicada.
 
 La infraestructura se gestionará utilizando Terraform.
 
-## **Tecnologías que se van a utilizar**
-
-Amazon Web Services (AWS), Terraform, GitHub Actions, Hugo y AWS CLI.
-
-## **Resultados que se esperan obtener**
-
-La finalidad del proyecto sería contar con una página web y su infraestructura generada y desplegada de forma automática a partir de los ficheros que subamos al repositorio de GitHub.
-
-Cualquier cambio que realicemos en el repositorio se verá reflejado en la web automáticamente.
-
-## **Precio**
-
-El proyecto está enfocado en la posibilidad de poner en funcionamiento una web estática (liviana) a coste cero, por lo que se usarán los tiers gratuitos de AWS ([lista de servicios gratuitos](https://aws.amazon.com/es/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc&awsf.Free%20Tier%20Types=*all&awsf.Free%20Tier%20Categories=*all)).
-
-El único coste a tener en cuenta será el de registrar un dominio, que según el proveedor puede costarnos incluso menos de 2€ al año.
-
-> Podríamos obtener un dominio con Route 53 evitando así salir del ecosistema de AWS, pero suele ser más caro que en otros proveedores (según disponibilidad y ofertas).
-
-## **Por qué automatizar el despliegue de una web estática**
-
-La automatización de tareas es una práctica muy extendida en el mundo de la informática, y en concreto en la filosofía DevOps. Nos permite ahorrar tiempo y esfuerzo, además de reducir la posibilidad de cometer errores.
-
-Por esto, es interesante comenzar a aprender con un proyecto a menor escala como este, que nos permitirá familiarizarnos con las tecnologías que se van a utilizar y servirá de base para proyectos más complejos.
-
-## **Tecnologías a utilizar**
+## **1. Tecnologías a utilizar**
 
 ![Diagrama](/img/Diagrama.png)
 
-### **Amazon Web Services (AWS)**
+### **1.1. Amazon Web Services (AWS)**
 
-[Amazon Web Services](https://aws.amazon.com/es/) es un proveedor de servicios en la nube, ofrece almacenamiento, computación, bases de datos y un largo etcétera en lo referente a cloud computing.
+- [Amazon Web Services](https://aws.amazon.com/es/) es un proveedor de servicios en la nube, ofrece almacenamiento, computación, bases de datos y un largo etcétera en lo referente a cloud computing.
 
 A lo largo de este proyecto se utilizarán los siguientes servicios de AWS:
 
@@ -101,23 +75,45 @@ A lo largo de este proyecto se utilizarán los siguientes servicios de AWS:
 
 > Cabe mencionar que AWS dispone de diferentes ubicaciones (regiones) en las que se pueden desplegar los recursos. Mi infraestructura se ubicará en la región `us-east-1` (Norte de Virginia) ya que es la que ofrece el mayor número de servicios e integraciones.
 
-### **Terraform**
+### **1.2. Terraform**
 
-[Terraform](https://www.terraform.io/) es una herramienta de infraestructura como código (IaC) que nos permite crear, modificar y versionar la infraestructura de forma segura y eficiente en diferentes proveedores de servicios en la nube. En este proyecto se utilizará para crear la infraestructura necesaria en AWS.
+- [Terraform](https://www.terraform.io/) es una herramienta de infraestructura como código (IaC) que nos permite crear, modificar y versionar la infraestructura de forma segura y eficiente en diferentes proveedores de servicios en la nube. En este proyecto se utilizará para crear la infraestructura necesaria en AWS.
 
-### **Hugo**
+### **1.3. Hugo**
 
-[Hugo](https://gohugo.io/) es un framework generador de sitios web estáticos (*el más rápido del mundo según su propia web*) escrito en Go. Me permitirá generar la web a partir de los ficheros markdown que subiré al repositorio de GitHub.
+- [Hugo](https://gohugo.io/) es un framework generador de sitios web estáticos (*el más rápido del mundo según su propia web*) escrito en Go. Me permitirá generar la web a partir de los ficheros markdown que subiré al repositorio de GitHub.
 
-### **GitHub Actions**
+### **1.4. GitHub Actions**
 
-[GitHub Actions](https://github.com/features/actions) es un servicio de integración y entrega continua (CI/CD) que nos permite automatizar tareas. Será el encargado de detectar los cambios que se produzcan en el repositorio y ejecutar los pasos necesarios para generar y desplegar la web en AWS invocando en el proceso a Hugo, Terraform y AWS CLI.
+- [GitHub Actions](https://github.com/features/actions) es un servicio de integración y entrega continua (CI/CD) que nos permite automatizar tareas. Será el encargado de detectar los cambios que se produzcan en el repositorio y ejecutar los pasos necesarios para generar y desplegar la web en AWS invocando en el proceso a Hugo, Terraform y AWS CLI.
 
-## **Preparación del entorno**
+## **2. Resultados que se esperan obtener**
+
+La finalidad del proyecto sería contar con una página web y su infraestructura generada y desplegada de forma automática a partir de los ficheros que subamos al repositorio de GitHub.
+
+Cualquier cambio que realicemos en el repositorio se verá reflejado en la web automáticamente.
+
+## **3. Precio**
+
+El proyecto está enfocado en la posibilidad de poner en funcionamiento una web estática (liviana) a coste cero, por lo que se usarán los tiers gratuitos de AWS ([lista de servicios gratuitos](https://aws.amazon.com/es/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc&awsf.Free%20Tier%20Types=*all&awsf.Free%20Tier%20Categories=*all)).
+
+El único coste a tener en cuenta será el de registrar un dominio, que según el proveedor puede costarnos incluso menos de 2€ al año.
+
+> Podríamos obtener un dominio con Route 53 evitando así salir del ecosistema de AWS, pero suele ser más caro que en otros proveedores (según disponibilidad y ofertas).
+
+## **4. ¿Por qué automatizar el despliegue de una web estática?**
+
+La automatización de tareas es una práctica muy extendida en el mundo de la informática, y en concreto en la filosofía DevOps. Nos permite ahorrar tiempo y esfuerzo, además de reducir la posibilidad de cometer errores.
+
+Por esto, es interesante comenzar a aprender con un proyecto a menor escala como este, que nos permitirá familiarizarnos con las tecnologías que se van a utilizar y servirá de base para proyectos más complejos.
+
+## **5. Preparación del entorno**
 
 Antes de comenzar con la configuración de la infraestructura, es necesario preparar el entorno de trabajo.
 
-### **Configuración de la MFA**
+Si no tenemos cuenta en Amazon Web Services y GitHub, es el momento de crearlas antes de continuar.
+
+### **5.1. Configuración de la MFA**
 
 Es recomendable si no lo hemos hecho aún o si acabamos de crear la cuenta en [AWS](https://aws.amazon.com/es/), la configuración de la autenticación multifactor (MFA), al fin y al cabo, AWS es un servicio que puede llegar a incurrir grandes gastos a nuestra cuenta bancaria por lo que cualquier protección ante robos de credenciales debe ser considerada.
 
@@ -131,7 +127,7 @@ En mi caso, como usuario de Android, tengo y recomiendo la app [Aegis](https://g
 
 Con MFA activado, lo siguiente será crear un usuario alternativo al usuario root de la cuenta de AWS.
 
-### **Creación del usuario de IAM**
+### **5.2. Creación del usuario de IAM**
 
 Crearemos un usuario con acceso programático. Accedemos como usuario root a la consola (web) de AWS y buscamos el servicio IAM:
 
@@ -177,7 +173,7 @@ En la siguiente pantalla podremos asignar una descripción a la clave si lo vemo
 
 > **IMPORTANTE**: En este punto se nos mostrará la clave de acceso y la clave secreta. Debemos guardarlas en un lugar seguro ya que no volveremos a tener acceso a la clave secreta.
 
-### **Creación del certificado SSL**
+### **5.3. Creación del certificado SSL**
 
 Para poder utilizar HTTPS en nuestra web, necesitamos un certificado SSL. Para conseguir uno de forma gratuita y sencilla, usaré AWS Certificate Manager (ACM).
 
@@ -191,7 +187,7 @@ Seleccionamos *Solicitar un certificado* y elegimos que sea de tipo *Público*:
 
 ![ACM3](/img/ACM3.png)
 
-En la siguiente pantalla introducimos nuestro dominio (en mi caso *juanje.eu* y *www.juanje.eu*), el resto de opciones podemos dejarlas por defecto (Validación DNS y RSA 2048):
+En la siguiente pantalla introducimos nuestro dominio (en mi caso `juanje.eu` y `www.juanje.eu`), el resto de opciones podemos dejarlas por defecto (Validación DNS y RSA 2048):
 
 ![ACM4](/img/ACM4.png)
 
@@ -213,7 +209,7 @@ Después de unos minutos (el tiempo de espera puede variar), el certificado esta
 
 Ahora que ya tenemos nuestro certificado SSL, podemos pasar a crear el repositorio para subir todo el código que a continuación vamos a crear.
 
-### **Creación del repositorio de GitHub**
+### **5.4. Creación del repositorio de GitHub**
 
 Para la gestión del código, usaré Git y GitHub. Primero creo un repositorio en GitHub llamado `Proyecto-Integrado-ASIR`:
 
@@ -243,7 +239,7 @@ git push -u origin main
 
 Con esto ya tendremos nuestro repositorio creado y conectado a nuestra carpeta local, listo para almacenar código.
 
-## **Terraform**
+## **6. Terraform**
 
 Para la configuración de la infraestructura, usaré Terraform, una herramienta de código abierto desarrollada por HashiCorp que nos permite crear, modificar y versionar la infraestructura de forma sencilla (**declarativa**).
 
@@ -273,7 +269,7 @@ Terraform guarda los cambios de estado de la infraestructura en un archivo de es
 
 Debido a la naturaleza de este proyecto, el archivo de estado se almacenará en un bucket de S3 (backend remoto), por lo que debemos crearlo antes de empezar con la configuración de Terraform.
 
-### **Creación del bucket de S3 para el estado remoto**
+### **6.1. Creación del bucket de S3 para el estado remoto**
 
 Accedemos a la consola (web) de AWS y buscamos el servicio S3:
 
@@ -291,7 +287,7 @@ Le damos un nombre que debe ser único (`juanje-terraform-state`) y seleccionamo
 
 Con el bucket para el estado remoto creado, podemos pasar a la configuración de Terraform.
 
-### **Configuración de Terraform**
+### **6.2. Configuración de Terraform**
 
 Para configurar Terraform, en el repositorio que creamos anteriormente, crearé una carpeta llamada *Terraform*. Ahora tenemos dos opciones, crear un archivo de configuración para cada recurso o crear un archivo de configuración general para todos los recursos. Por facilitar la organización, usaré la primera opción, de este modo, crearé los siguientes archivos (sus nombres no son importantes, pero la extensión y contenido sí):
 
@@ -522,7 +518,7 @@ git push
 
 ![Terraform-Files-GitHub](/img/Terraform-Files-GitHub.png)
 
-## **Hugo**
+## **7. Hugo**
 
 Para crear la web estática, usaré Hugo (extended). En Ubuntu 22.04 lo he instalado de la siguiente forma ([instrucciones para otros sistemas operativos](https://gohugo.io/installation/)):
 
@@ -590,9 +586,9 @@ git push
 
 ![Hugo-Files-GitHub](/img/Hugo-Files-GitHub.png)
 
-## **GitHub**
+## **8. GitHub**
 
-### **GitHub Actions**
+### **8.1. GitHub Actions**
 
 Para automatizar el proceso de creación de la web estática y su subida a S3, usaré un *workflow* de GitHub Actions. Los *workflows* son archivos de configuración escritos en YAML que permiten automatizar procesos en GitHub. En mi caso, crearé uno que se ejecute cada vez que se haga un *push* a los directorios que contienen los archivos de Terraform o de Hugo.
 
@@ -700,13 +696,13 @@ Es un archivo bastante sencillo de comprender, pero voy a detallar algunas parte
 
    - `hugo-deploy`: Se ejecutará en una máquina virtual de Ubuntu y se encargará de construir el sitio web con Hugo y desplegarlo en S3, pero solo se ejecutará si el *job* de *terraform* termina satisfactoriamente, evitando así intentar subir los ficheros de la web si la infraestructura no está lista. Para ello, primero se clonará el repositorio incluyendo el submódulo del tema, se configurarán las credenciales de AWS CLI, se instalará Hugo, se crearán los archivos de la web y se sincronizarán con nuestro bucket de S3, además, se invalidará la caché de CloudFront (en aquellos archivos que es necesario) para tener los cambios disponibles de forma inmediata.
 
-### **Secrets**
+### **8.2. Secrets**
 
 Para que el *workflow* funcione, necesitamos crear algunos *secrets* en nuestro repositorio, para ello en la web de GitHub vamos a `Settings > Secrets and variables > Actions > New repository secret` y creamos los siguientes, con sus respectivos valores:
 
 ![GitHub-Secrets](/img/GitHub-Secrets.png)
 
-## **Comprobación**
+## **9. Comprobación**
 
 Llegados a este punto, ya podemos hacer un *push* a alguno de los directorios que hemos indicado en el *workflow* (`Terraform` o `Blog de Juanje`) y comprobar que todo se ejecuta correctamente:
 
@@ -714,13 +710,19 @@ Llegados a este punto, ya podemos hacer un *push* a alguno de los directorios qu
 
 Como podemos ver, todo el flujo de CI/CD se ha ejecutado correctamente y ya tenemos nuestra web estática desplegada, sin servidor y sin preocuparnos por gestionar la infraestructura o el código html/css/js.
 
-## **Bibliografía**
+## **10. Enlaces de interés**
+
+Además de la bibliografía que se encuentra a continuación, es importante mencionar que todo el código tanto de Terraform como de Hugo y GitHub Actions se encuentra en [el repositorio de GitHub de este proyecto](https://github.com/JuanJesusAlejoSillero/Proyecto-Integrado-ASIR), en los directorios `Terraform`, `Blog de Juanje` y `.github/workflows` respectivamente.
+
+La memoria completa del proyecto es este mismo post que estás leyendo.
+
+## **11. Bibliografía**
 
 Para la realización de este proyecto he ido recopilando y utilizando partes de muchas, muchísimas fuentes, ya que no he conseguido hallar una que pudiera seguir de principio a fin sin encontrar obstáculos en el proceso (configuraciones desfasadas, errores en la documentación, falta de claridad en las explicaciones, infraestructuras demasiado complejas o incompatibles con mi proyecto, etc.). Las clasifico a continuación para intentar facilitar la búsqueda de información.
 
-### **Documentaciones oficiales**
+### **11.1. Documentaciones oficiales**
 
-#### **Amazon Web Services**
+#### **11.1.1. Amazon Web Services**
 
 - [Interfaz de la línea de comandos - AWS CLI - AWS](https://aws.amazon.com/es/cli/)
 
@@ -742,7 +744,7 @@ Para la realización de este proyecto he ido recopilando y utilizando partes de 
 
 - [Automate static website deployment to Amazon S3 - AWS Prescriptive Guidance](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/automate-static-website-deployment-to-amazon-s3.html)
 
-#### **Terraform**
+#### **11.1.2. Terraform**
 
 - [Terraform CLI: Commands - Terraform by HashiCorp](https://developer.hashicorp.com/terraform/cli/commands/init)
 
@@ -790,7 +792,7 @@ Para la realización de este proyecto he ido recopilando y utilizando partes de 
 
 - [Automate Terraform with GitHub Actions | Terraform - HashiCorp Developer](https://developer.hashicorp.com/terraform/tutorials/automation/github-actions)
 
-#### **Hugo**
+#### **11.1.3. Hugo**
 
 - [Shortcodes | Hugo](https://gohugo.io/content-management/shortcodes/)
 
@@ -802,7 +804,7 @@ Para la realización de este proyecto he ido recopilando y utilizando partes de 
 
 - [terminal | Hugo Themes](https://themes.gohugo.io/themes/hugo-theme-terminal/)
 
-#### **Git, GitHub y GitHub Actions**
+#### **11.1.4. Git, GitHub y GitHub Actions**
 
 - [Contexts - GitHub Docs](https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability)
 
@@ -820,7 +822,7 @@ Para la realización de este proyecto he ido recopilando y utilizando partes de 
 
 - [HashiCorp - Setup Terraform · Actions · GitHub Marketplace](https://github.com/marketplace/actions/hashicorp-setup-terraform)
 
-### **Blogs, foros, discusiones y webs de texto**
+### **11.2 Blogs, foros, discusiones y webs de texto**
 
 - [AWS Breaking (Change) News: New S3 Buckets Blocked For Public Access | by Adam Fisher / fisher king (@therightstuff) | Apr, 2023 | AWS Tip](https://awstip.com/aws-breaking-change-news-new-s3-buckets-blocked-for-public-access-ad83d626afb4)
 
@@ -928,7 +930,7 @@ Para la realización de este proyecto he ido recopilando y utilizando partes de 
 
 - [Limpiar caché  |  Public DNS  |  Google for Developers](https://developers.google.com/speed/public-dns/cache?hl=es-419)
 
-### **Tutoriales en vídeo**
+### **11.3. Tutoriales en vídeo**
 
 - [AWS Hands-On: Automate AWS Infra Deployment using Terraform and GitHub Actions - YouTube](https://www.youtube.com/watch?t=598&v=scecLqTeP3k&feature=youtu.be)
 
