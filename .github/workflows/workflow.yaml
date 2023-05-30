@@ -71,9 +71,4 @@ jobs:
         run: |
           aws cloudfront create-invalidation \
             --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
-            --paths "/" \
-            "/index.html" \
-            "/posts/" \
-            "/posts/index.html" \
-            "/tags/" \
-            "/tags/index.html"
+            --paths "/*"

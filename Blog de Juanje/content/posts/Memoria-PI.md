@@ -676,12 +676,7 @@ jobs:
         run: |
           aws cloudfront create-invalidation \
             --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
-            --paths "/" \
-            "/index.html" \
-            "/posts/" \
-            "/posts/index.html" \
-            "/tags/" \
-            "/tags/index.html"
+            --paths "/*"
 ```
 
 Es un archivo bastante sencillo de comprender, pero voy a detallar algunas partes:
@@ -694,7 +689,7 @@ Es un archivo bastante sencillo de comprender, pero voy a detallar algunas parte
 
    - `terraform`: Se ejecutará en una máquina virtual de Ubuntu y se encargará de verificar y desplegar la infraestructura con Terraform si hiciera falta. Para ello, primero se clonará el repositorio, se instalará Terraform, se inicializará y se aplicará el plan.
 
-   - `hugo-deploy`: Se ejecutará en una máquina virtual de Ubuntu y se encargará de construir el sitio web con Hugo y desplegarlo en S3, pero solo se ejecutará si el *job* de *terraform* termina satisfactoriamente, evitando así intentar subir los ficheros de la web si la infraestructura no está lista. Para ello, primero se clonará el repositorio incluyendo el submódulo del tema, se configurarán las credenciales de AWS CLI, se instalará Hugo, se crearán los archivos de la web y se sincronizarán con nuestro bucket de S3, además, se invalidará la caché de CloudFront (en aquellos archivos que es necesario) para tener los cambios disponibles de forma inmediata.
+   - `hugo-deploy`: Se ejecutará en una máquina virtual de Ubuntu y se encargará de construir el sitio web con Hugo y desplegarlo en S3, pero solo se ejecutará si el *job* de *terraform* termina satisfactoriamente, evitando así intentar subir los ficheros de la web si la infraestructura no está lista. Para ello, primero se clonará el repositorio incluyendo el submódulo del tema, se configurarán las credenciales de AWS CLI, se instalará Hugo, se crearán los archivos de la web y se sincronizarán con nuestro bucket de S3, además, se invalidará la caché de CloudFront para tener los cambios disponibles de forma inmediata.
 
 ### **8.2. Secrets**
 
