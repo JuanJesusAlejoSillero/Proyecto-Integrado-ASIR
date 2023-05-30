@@ -28,7 +28,7 @@ Despliegue de una web estática - The GitOps Way.
 
 ### **Descripción**
 
-El objetivo del proyecto es desplegar una web estática utilizando un flujo de CI/CD de GitHub Actions que automáticamente despliegue la web sobre AWS a partir de los ficheros markdown que subiremos al repositorio. En concreto, los ficheros estáticos se encontrarán ubicados en un bucket de S3.
+El objetivo del proyecto es poner en funcionamiento una web estática utilizando un flujo de CI/CD de GitHub Actions que automáticamente despliegue la web sobre AWS a partir de los ficheros markdown que subiremos al repositorio. En concreto, los ficheros estáticos se encontrarán ubicados en un bucket de S3.
 
 Este tipo de configuración se conoce como *serverless* ya que prescindimos completamente de tener una instancia/máquina sirviendo el contenido 24 horas al día de forma dedicada.
 
