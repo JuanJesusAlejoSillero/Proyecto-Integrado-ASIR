@@ -496,7 +496,7 @@ resource "aws_cloudfront_distribution" "cloudfront" {
 
 En su sintaxis se especifica que:
 
-1. Definimos la política de caché que usaremos mediante su ID, es la que recomiend AWS para webs estáticas.
+1. Definimos la política de caché que usaremos mediante su ID, es la que recomienda AWS para webs estáticas.
 
 2. Después, creamos la distribución de CloudFront, indicándole que esté habilitada, que no use IPv6, que el nombre del dominio es el de la variable `domain` y que el fichero por defecto es el `index.html`.
 
