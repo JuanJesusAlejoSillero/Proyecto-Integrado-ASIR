@@ -90,7 +90,7 @@ Por esto, es interesante comenzar a aprender con un proyecto a menor escala como
 
 ## **Memoria**
 
-La memoria completa del proyecto puede ser consultada en el siguiente enlace: [Despliegue de una web estática - The GitOps Way :: Blog de Juanje](https://www.juanje.eu/posts/memoria-pi/)
+La memoria completa del proyecto puede ser consultada en el siguiente enlace: [Despliegue de una web estática - The GitOps Way - Blog de Juanje](https://sh.juanje.net/proyecto-integrado-asir)
 
 Todos los ficheros utilizados en el proyecto se encuentran en este repositorio.
 
